@@ -1,12 +1,19 @@
 export const useAuth = () => {
-  const sanctumFetch = useSanctumClient();
+  const sanctumFetch = useSanctumClient(),
+    errors = ref({});
 
   async function register(form: RegisterForm) {
-    return await sanctumFetch("/register", {
-      method: "POST",
-      body: form,
-    });
+    try {
+      return await sanctumFetch("/register", {
+        method: "POST",
+        body: form,
+      });
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+    }
   }
 
-  return { register };
+  return { register, errors };
 };
