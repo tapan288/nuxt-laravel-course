@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     baseUrl: "http://backend.test:80", // Laravel API
     redirect: {
       onAuthOnly: "auth/login",
-      onGuestOnly: "dashboard",
+      onGuestOnly: "/dashboard",
       onLogout: "/",
     },
   },
