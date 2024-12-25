@@ -27,6 +27,25 @@ const submit = async () => {
       >
         Update Profile
       </h2>
+      <div class="rounded-md bg-blue-50 p-4 mt-8">
+        <div class="flex">
+          <div class="ml-3 flex-1 md:flex md:justify-between">
+            <p class="text-sm text-blue-700">
+              Two factor authentication is
+              <span>enabled</span>
+              <!-- <span >disabled</span>. -->
+            </p>
+            <p class="mt-3 text-sm md:ml-6 md:mt-0">
+              <NuxtLink
+                class="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+              >
+                Enable
+                <span aria-hidden="true"> &rarr;</span>
+              </NuxtLink>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form class="space-y-6" @submit.prevent="submit">
