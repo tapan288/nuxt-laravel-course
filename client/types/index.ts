@@ -4,6 +4,7 @@ declare global {
     name: string;
     email: string;
     created_at: string;
+    two_factor_enabled: boolean;
   }
 
   interface LoginForm {

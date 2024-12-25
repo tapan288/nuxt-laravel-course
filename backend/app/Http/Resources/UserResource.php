@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'created_at' => $this->created_at->toDateString(),
+            'two_factor_enabled' => !is_null($this->two_factor_confirmed_at),
         ];
     }
 }
