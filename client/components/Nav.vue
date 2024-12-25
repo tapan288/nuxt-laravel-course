@@ -66,6 +66,12 @@ const logout = async () => {
           >
             Log in &rarr;
           </NuxtLink>
+          <NuxtLink
+            to="/auth/register"
+            class="text-sm font-semibold leading-6 text-gray-900"
+          >
+            Register &rarr;
+          </NuxtLink>
         </div>
       </div>
     </nav>
