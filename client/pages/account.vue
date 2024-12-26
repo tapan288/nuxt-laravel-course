@@ -37,6 +37,7 @@ const submit = async () => {
             </p>
             <p class="mt-3 text-sm md:ml-6 md:mt-0">
               <NuxtLink
+                to="/two-factor-auth/enable"
                 class="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
               >
                 {{ user?.two_factor_enabled ? "Disable" : "Enable" }}

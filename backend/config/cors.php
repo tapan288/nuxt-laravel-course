@@ -22,6 +22,7 @@ return [
         'logout',
         'register',
         'user/profile-information',
+        'user/confirm-password',
     ],
 
     'allowed_methods' => ['*'],
