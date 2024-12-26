@@ -17,7 +17,7 @@ export const useAuth = () => {
 
   async function confirmPassword(form: ConfirmPasswordForm) {
     try {
-      return await sanctumFetch("/user/confirm-password", {
+      return await sanctumFetch.raw("/user/confirm-password", {
         method: "POST",
         body: form,
       });
@@ -41,5 +41,26 @@ export const useAuth = () => {
     }
   }
 
-  return { register, errors, updateProfile, confirmPassword };
+  async function enableTwoFactor() {
+    try {
+      const response = await sanctumFetch.raw(
+        "/user/two-factor-authentication",
+        {
+          method: "POST",
+        }
+      );
+
+      if (response.status != 200) {
+        return Promise.reject(null);
+      }
+
+      return await sanctumFetch("/user/two-factor-qr-code");
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+    }
+  }
+
+  return { register, errors, updateProfile, confirmPassword, enableTwoFactor };
 };
