@@ -1,6 +1,7 @@
 export const useAuth = () => {
   const sanctumFetch = useSanctumClient(),
     errors = ref({});
+  const { refreshIdentity } = useSanctumAuth();
 
   async function register(form: RegisterForm) {
     try {
@@ -62,5 +63,32 @@ export const useAuth = () => {
     }
   }
 
-  return { register, errors, updateProfile, confirmPassword, enableTwoFactor };
+  async function submitCode(form: CodeForm) {
+    try {
+      const response = await sanctumFetch.raw(
+        "/user/confirmed-two-factor-authentication",
+        {
+          method: "POST",
+          body: form,
+        }
+      );
+
+      await refreshIdentity();
+
+      return response;
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+    }
+  }
+
+  return {
+    register,
+    errors,
+    updateProfile,
+    confirmPassword,
+    enableTwoFactor,
+    submitCode,
+  };
 };

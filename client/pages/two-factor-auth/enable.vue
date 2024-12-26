@@ -4,10 +4,19 @@ definePageMeta({
   title: "Enable Two Factor Authentication",
 });
 
-const { confirmPassword, errors, enableTwoFactor } = useAuth();
+const {
+  confirmPassword,
+  errors,
+  enableTwoFactor,
+  submitCode: submitCodeAction,
+} = useAuth();
 
 let svg = reactive({
   qrCode: "",
+});
+
+const codeForm = reactive<CodeForm>({
+  code: "",
 });
 
 const confirmPasswordForm = reactive<ConfirmPasswordForm>({
@@ -21,6 +30,12 @@ const submit = async () => {
         svg.qrCode = qrCodeResponse.svg;
       });
     }
+  });
+};
+
+const submitCode = async () => {
+  submitCodeAction(codeForm).then(async (response) => {
+    await navigateTo("/account");
   });
 };
 </script>
@@ -94,7 +109,7 @@ const submit = async () => {
           </p>
           <p class="py-1">And enter the code below.</p>
         </div>
-        <form class="space-y-6" @submit.prevent="submit">
+        <form class="space-y-6" @submit.prevent="submitCode">
           <div>
             <label
               for="code"
@@ -103,6 +118,7 @@ const submit = async () => {
             >
             <div class="mt-2">
               <input
+                v-model="codeForm.code"
                 id="code"
                 name="code"
                 type="text"

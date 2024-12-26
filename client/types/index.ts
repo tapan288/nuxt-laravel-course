@@ -27,4 +27,8 @@ declare global {
     name: string;
     email: string;
   }
+
+  interface CodeForm {
+    code: string;
+  }
 }
