@@ -29,10 +29,38 @@ export const useAuth = () => {
     }
   }
 
+  async function confirmTwoFactor(form: CodeForm) {
+    try {
+      await sanctumFetch.raw("/two-factor-challenge", {
+        method: "POST",
+        body: form,
+      });
+
+      return await refreshIdentity();
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+    }
+  }
+
   async function updateProfile(form: ProfileForm) {
     try {
       return await sanctumFetch("/user/profile-information", {
         method: "PUT",
+        body: form,
+      });
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+    }
+  }
+
+  async function login(form: LoginForm) {
+    try {
+      return await sanctumFetch("/login", {
+        method: "POST",
         body: form,
       });
     } catch (error: any) {
@@ -90,5 +118,7 @@ export const useAuth = () => {
     confirmPassword,
     enableTwoFactor,
     submitCode,
+    login,
+    confirmTwoFactor,
   };
 };

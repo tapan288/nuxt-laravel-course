@@ -26,6 +26,7 @@ return [
         '/user/two-factor-authentication',
         '/user/two-factor-qr-code',
         '/user/confirmed-two-factor-authentication',
+        'two-factor-challenge',
     ],
 
     'allowed_methods' => ['*'],
