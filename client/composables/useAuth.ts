@@ -91,6 +91,20 @@ export const useAuth = () => {
     }
   }
 
+  async function disableTwoFactor() {
+    try {
+      await sanctumFetch.raw("/user/two-factor-authentication", {
+        method: "DELETE",
+      });
+
+      return await refreshIdentity();
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+    }
+  }
+
   async function submitCode(form: CodeForm) {
     try {
       const response = await sanctumFetch.raw(
@@ -117,6 +131,7 @@ export const useAuth = () => {
     updateProfile,
     confirmPassword,
     enableTwoFactor,
+    disableTwoFactor,
     submitCode,
     login,
     confirmTwoFactor,
