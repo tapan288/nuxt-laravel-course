@@ -3,6 +3,10 @@ definePageMeta({
   middleware: ["sanctum:auth"],
   title: "Add Student",
 });
+
+const { units, fetchUnits } = useUnit();
+
+fetchUnits();
 </script>
 
 <template>
@@ -58,7 +62,9 @@ definePageMeta({
                     class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">Select a Class</option>
-                    <option>Class 1</option>
+                    <option v-for="unit in units" :key="unit.id">
+                      {{ unit.name }}
+                    </option>
                   </select>
                 </div>
                 <div class="col-span-6 sm:col-span-3">

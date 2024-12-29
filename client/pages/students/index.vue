@@ -1,4 +1,9 @@
 <script setup>
+definePageMeta({
+  middleware: ["sanctum:auth"],
+  title: "Student List",
+});
+
 const { fetchStudents, students } = useStudent();
 
 fetchStudents();
