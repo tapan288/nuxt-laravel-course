@@ -1,5 +1,6 @@
 export const useStudent = () => {
-  const students = ref({});
+  const students = ref({}),
+    errors = ref({});
   const sanctumFetch = useSanctumClient();
 
   let studentsUrl = computed(() => {
@@ -18,5 +19,22 @@ export const useStudent = () => {
     }
   };
 
-  return { students, fetchStudents, studentsUrl };
+  const createStudent = async (studentForm) => {
+    try {
+      let response = await sanctumFetch("api/students", {
+        method: "POST",
+        body: studentForm,
+      });
+
+      return response;
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+
+      return Promise.reject(null);
+    }
+  };
+
+  return { students, fetchStudents, studentsUrl, createStudent, errors };
 };

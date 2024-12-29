@@ -6,6 +6,7 @@ definePageMeta({
 
 const { units, fetchUnits } = useUnit();
 const { sections, fetchSections } = useSection();
+const { createStudent, errors } = useStudent();
 
 const form = reactive({
   name: "",
@@ -22,13 +23,19 @@ watch(
     fetchSections(newValue);
   }
 );
+
+const submit = async () => {
+  await createStudent(form).then(async () => {
+    await navigateTo("/students");
+  });
+};
 </script>
 
 <template>
   <div class="mx-auto py-6 sm:px-6 lg:px-8">
     <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
       <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-12">
-        <form>
+        <form @submit.prevent="submit">
           <div class="shadow sm:rounded-md sm:overflow-hidden">
             <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
               <div>
@@ -50,9 +57,15 @@ watch(
                     v-model="form.name"
                     type="text"
                     id="name"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300 @enderror"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    :class="{
+                      'text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300':
+                        errors.name,
+                    }"
                   />
-                  <p class="text-red-500">This field is required</p>
+                  <p v-if="errors.name" class="text-red-500">
+                    {{ errors.name[0] }}
+                  </p>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
                   <label
@@ -66,7 +79,14 @@ watch(
                     id="email"
                     autocomplete="email"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    :class="{
+                      'text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300':
+                        errors.email,
+                    }"
                   />
+                  <p v-if="errors.email" class="text-red-500">
+                    {{ errors.email[0] }}
+                  </p>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
                   <label
@@ -78,6 +98,10 @@ watch(
                     v-model="form.unit_id"
                     id="class_id"
                     class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    :class="{
+                      'text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300':
+                        errors.unit_id,
+                    }"
                   >
                     <option value="">Select a Class</option>
                     <option
@@ -88,6 +112,9 @@ watch(
                       {{ unit.name }}
                     </option>
                   </select>
+                  <p v-if="errors.unit_id" class="text-red-500">
+                    {{ errors.unit_id[0] }}
+                  </p>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
                   <label
@@ -99,12 +126,23 @@ watch(
                     v-model="form.section_id"
                     id="section_id"
                     class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    :class="{
+                      'text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300':
+                        errors.section_id,
+                    }"
                   >
                     <option value="">Select a Section</option>
-                    <option v-for="section in sections" :key="section.id">
+                    <option
+                      :value="section.id"
+                      v-for="section in sections"
+                      :key="section.id"
+                    >
                       {{ section.name }}
                     </option>
                   </select>
+                  <p v-if="errors.section_id" class="text-red-500">
+                    {{ errors.section_id[0] }}
+                  </p>
                 </div>
               </div>
             </div>
