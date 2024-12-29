@@ -5,8 +5,23 @@ definePageMeta({
 });
 
 const { units, fetchUnits } = useUnit();
+const { sections, fetchSections } = useSection();
+
+const form = reactive({
+  name: "",
+  email: "",
+  unit_id: "",
+  section_id: "",
+});
 
 fetchUnits();
+
+watch(
+  () => form.unit_id,
+  (newValue) => {
+    fetchSections(newValue);
+  }
+);
 </script>
 
 <template>
@@ -32,6 +47,7 @@ fetchUnits();
                     >Name</label
                   >
                   <input
+                    v-model="form.name"
                     type="text"
                     id="name"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300 @enderror"
@@ -45,6 +61,7 @@ fetchUnits();
                     >Email Address</label
                   >
                   <input
+                    v-model="form.email"
                     type="email"
                     id="email"
                     autocomplete="email"
@@ -58,11 +75,16 @@ fetchUnits();
                     >Class</label
                   >
                   <select
+                    v-model="form.unit_id"
                     id="class_id"
                     class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">Select a Class</option>
-                    <option v-for="unit in units" :key="unit.id">
+                    <option
+                      :value="unit.id"
+                      v-for="unit in units"
+                      :key="unit.id"
+                    >
                       {{ unit.name }}
                     </option>
                   </select>
@@ -74,11 +96,14 @@ fetchUnits();
                     >Section</label
                   >
                   <select
+                    v-model="form.section_id"
                     id="section_id"
                     class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">Select a Section</option>
-                    <option value="1">Section A</option>
+                    <option v-for="section in sections" :key="section.id">
+                      {{ section.name }}
+                    </option>
                   </select>
                 </div>
               </div>
