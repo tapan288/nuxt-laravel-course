@@ -4,9 +4,17 @@ definePageMeta({
   title: "Student List",
 });
 
-const { fetchStudents, students } = useStudent();
+const { fetchStudents, students, deleteStudent } = useStudent();
 
 fetchStudents();
+
+const deleteAction = (id) => {
+  if (confirm("Are you sure you want to delete this student?")) {
+    deleteStudent(id).then(() => {
+      students.value = students.value.filter((student) => student.id !== id);
+    });
+  }
+};
 </script>
 
 <template>
@@ -124,6 +132,7 @@ fetchStudents();
                           Edit
                         </NuxtLink>
                         <button
+                          @click="deleteAction(student.id)"
                           class="ml-2 text-indigo-600 hover:text-indigo-900"
                         >
                           Delete

@@ -63,6 +63,18 @@ export const useStudent = () => {
     }
   };
 
+  const deleteStudent = async (id: string) => {
+    try {
+      let response = await sanctumFetch("api/students/" + id, {
+        method: "DELETE",
+      });
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     students,
     fetchStudents,
@@ -71,5 +83,6 @@ export const useStudent = () => {
     errors,
     updateStudent,
     getStudent,
+    deleteStudent,
   };
 };
