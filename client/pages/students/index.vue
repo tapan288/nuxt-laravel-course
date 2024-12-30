@@ -11,9 +11,10 @@ const {
   pageNumber,
   metaData,
   updatedPageNumber,
+  studentsUrl,
 } = useStudent();
 
-fetchStudents();
+fetchStudents(studentsUrl.value);
 
 const deleteAction = (id) => {
   if (confirm("Are you sure you want to delete this student?")) {

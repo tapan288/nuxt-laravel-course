@@ -8,17 +8,19 @@ export const useStudent = () => {
   let studentsUrl = computed(() => {
     let url = new URL("http://backend.test/api/students");
 
+    url.searchParams.append("page", pageNumber.value);
+
     return url;
   });
 
-  const fetchStudents = async () => {
+  const fetchStudents = async (studentsUrl: string) => {
+    console.log(studentsUrl);
+
     try {
-      let response = await sanctumFetch(studentsUrl.value.href);
+      let response = await sanctumFetch(studentsUrl);
 
       students.value = response.data;
       metaData.value = response.meta;
-
-      console.log(response.meta);
     } catch (error) {
       console.log(error);
     }
@@ -80,9 +82,16 @@ export const useStudent = () => {
     }
   };
 
-  const updatedPageNumber = (link) => {
+  const updatedPageNumber = (link: Object) => {
     pageNumber.value = link.url.split("page=")[1];
   };
+
+  watch(
+    () => studentsUrl.value,
+    (updatedStudentsUrl) => {
+      fetchStudents(updatedStudentsUrl);
+    }
+  );
 
   return {
     students,
