@@ -1,6 +1,8 @@
 export const useStudent = () => {
   const students = ref({}),
-    errors = ref({});
+    errors = ref({}),
+    metaData = ref({}),
+    pageNumber = ref("1");
   const sanctumFetch = useSanctumClient();
 
   let studentsUrl = computed(() => {
@@ -14,6 +16,9 @@ export const useStudent = () => {
       let response = await sanctumFetch(studentsUrl.value.href);
 
       students.value = response.data;
+      metaData.value = response.meta;
+
+      console.log(response.meta);
     } catch (error) {
       console.log(error);
     }
@@ -75,6 +80,10 @@ export const useStudent = () => {
     }
   };
 
+  const updatedPageNumber = (link) => {
+    pageNumber.value = link.url.split("page=")[1];
+  };
+
   return {
     students,
     fetchStudents,
@@ -84,5 +93,8 @@ export const useStudent = () => {
     updateStudent,
     getStudent,
     deleteStudent,
+    pageNumber,
+    metaData,
+    updatedPageNumber,
   };
 };

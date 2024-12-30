@@ -4,7 +4,14 @@ definePageMeta({
   title: "Student List",
 });
 
-const { fetchStudents, students, deleteStudent } = useStudent();
+const {
+  fetchStudents,
+  students,
+  deleteStudent,
+  pageNumber,
+  metaData,
+  updatedPageNumber,
+} = useStudent();
 
 fetchStudents();
 
@@ -142,6 +149,10 @@ const deleteAction = (id) => {
                   </tbody>
                 </table>
               </div>
+              <Pagination
+                :metaData="metaData"
+                :updatedPageNumber="updatedPageNumber"
+              />
             </div>
           </div>
         </div>
