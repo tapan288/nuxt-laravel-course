@@ -36,5 +36,40 @@ export const useStudent = () => {
     }
   };
 
-  return { students, fetchStudents, studentsUrl, createStudent, errors };
+  const updateStudent = async (id: string, studentForm: StudentForm) => {
+    try {
+      let response = await sanctumFetch("api/students/" + id, {
+        method: "PUT",
+        body: studentForm,
+      });
+
+      return response;
+    } catch (error: any) {
+      if (error.statusCode == 422) {
+        errors.value = error.data.errors;
+      }
+
+      return Promise.reject(null);
+    }
+  };
+
+  const getStudent = async (id: string) => {
+    try {
+      let response = await sanctumFetch("api/students/" + id);
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return {
+    students,
+    fetchStudents,
+    studentsUrl,
+    createStudent,
+    errors,
+    updateStudent,
+    getStudent,
+  };
 };

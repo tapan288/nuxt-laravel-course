@@ -19,6 +19,13 @@ declare global {
     password_confirmation: string;
   }
 
+  interface StudentForm {
+    name: string;
+    email: string;
+    unit_id: string;
+    section_id: string;
+  }
+
   interface ConfirmPasswordForm {
     password: string;
   }
