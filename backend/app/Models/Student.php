@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
 {
@@ -22,5 +24,12 @@ class Student extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function scopeSearch(Builder $query, Request $request)
+    {
+        return $query->when($request->search, function ($query) use ($request) {
+            return $query->whereAny(['name', 'email'], 'like', '%' . $request->search . '%');
+        });
     }
 }

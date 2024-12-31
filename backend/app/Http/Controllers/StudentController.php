@@ -10,11 +10,13 @@ use App\Http\Requests\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::paginate(10);
+        $students = Student::search($request);
 
-        return StudentResource::collection($students);
+        return StudentResource::collection(
+            $students->paginate(10),
+        );
     }
 
     public function store(StoreStudentRequest $request)

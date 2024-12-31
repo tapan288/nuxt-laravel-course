@@ -2,13 +2,18 @@ export const useStudent = () => {
   const students = ref({}),
     errors = ref({}),
     metaData = ref({}),
-    pageNumber = ref("1");
+    pageNumber = ref("1"),
+    search = ref("");
   const sanctumFetch = useSanctumClient();
 
   let studentsUrl = computed(() => {
     let url = new URL("http://backend.test/api/students");
 
     url.searchParams.append("page", pageNumber.value);
+
+    if (search.value) {
+      url.searchParams.append("search", search.value);
+    }
 
     return url;
   });
@@ -105,5 +110,6 @@ export const useStudent = () => {
     pageNumber,
     metaData,
     updatedPageNumber,
+    search,
   };
 };
