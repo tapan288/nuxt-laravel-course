@@ -3,7 +3,8 @@ export const useStudent = () => {
     errors = ref({}),
     metaData = ref({}),
     pageNumber = ref("1"),
-    search = ref("");
+    search = ref(""),
+    unit_id = ref("");
   const sanctumFetch = useSanctumClient();
 
   let studentsUrl = computed(() => {
@@ -15,12 +16,14 @@ export const useStudent = () => {
       url.searchParams.append("search", search.value);
     }
 
+    if (unit_id.value) {
+      url.searchParams.append("unit_id", unit_id.value);
+    }
+
     return url;
   });
 
   const fetchStudents = async (studentsUrl: string) => {
-    console.log(studentsUrl);
-
     try {
       let response = await sanctumFetch(studentsUrl);
 
@@ -98,6 +101,15 @@ export const useStudent = () => {
     }
   );
 
+  watch(
+    () => search.value,
+    (newValue) => {
+      if (newValue) {
+        pageNumber.value = "1";
+      }
+    }
+  );
+
   return {
     students,
     fetchStudents,
@@ -111,5 +123,6 @@ export const useStudent = () => {
     metaData,
     updatedPageNumber,
     search,
+    unit_id,
   };
 };

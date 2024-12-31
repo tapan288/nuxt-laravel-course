@@ -15,9 +15,13 @@ const {
   updatedPageNumber,
   studentsUrl,
   search,
+  unit_id,
 } = useStudent();
 
+const { units, fetchUnits } = useUnit();
+
 fetchStudents(studentsUrl.value);
+fetchUnits();
 
 const deleteAction = (id) => {
   if (confirm("Are you sure you want to delete this student?")) {
@@ -64,6 +68,15 @@ const deleteAction = (id) => {
               class="block rounded-lg border-0 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
+          <select
+            v-model="unit_id"
+            class="block rounded-lg border-0 py-2 ml-5 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+          >
+            <option value="">Filter By Class</option>
+            <option v-for="unit in units" :key="unit.id" :value="unit.id">
+              {{ unit.name }}
+            </option>
+          </select>
         </div>
         <div class="mt-8 flex flex-col">
           <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">

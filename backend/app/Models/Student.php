@@ -30,6 +30,8 @@ class Student extends Model
     {
         return $query->when($request->search, function ($query) use ($request) {
             return $query->whereAny(['name', 'email'], 'like', '%' . $request->search . '%');
+        })->when($request->unit_id, function ($query) use ($request) {
+            return $query->where('unit_id', $request->unit_id);
         });
     }
 }
