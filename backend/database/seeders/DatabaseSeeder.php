@@ -20,6 +20,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
         ]);
 
-        $this->call([UnitSeeder::class]);
+        User::factory()->create([
+            'name' => 'User',
+            'email' => 'user@user.com',
+        ]);
+
+        $this->call([
+            UnitSeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            PermissionRoleTableSeeder::class,
+            RoleUserTableSeeder::class,
+        ]);
     }
 }
