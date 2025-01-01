@@ -59,10 +59,14 @@ export const useAuth = () => {
 
   async function login(form: LoginForm) {
     try {
-      return await sanctumFetch("/login", {
+      const response = await sanctumFetch("/login", {
         method: "POST",
         body: form,
       });
+
+      await refreshIdentity();
+
+      return response;
     } catch (error: any) {
       if (error.statusCode == 422) {
         errors.value = error.data.errors;
