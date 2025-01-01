@@ -15,9 +15,9 @@ const login = async () => {
   const response = await loginAction(form);
 
   if (response.two_factor) {
-    await navigateTo("/two-factor-auth/challenge");
+    await navigateTo("/two-factor-auth/challenge", { replace: true });
   } else {
-    await navigateTo("/dashboard");
+    await navigateTo("/dashboard", { replace: true });
   }
 };
 </script>
