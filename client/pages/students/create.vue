@@ -1,7 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: ["sanctum:auth"],
+  middleware: ["sanctum:auth", "permission"],
   title: "Add Student",
+  permission: "student_create",
 });
 
 const { units, fetchUnits } = useUnit();

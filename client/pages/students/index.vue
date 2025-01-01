@@ -1,10 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import MagnifyingGlass from "~/components/MagnifyingGlass.vue";
 
 definePageMeta({
-  middleware: ["sanctum:auth"],
+  middleware: ["sanctum:auth", "permission"],
   title: "Student List",
+  permission: "student_list",
 });
+const user = useSanctumUser<User>();
 
 const {
   fetchStudents,
@@ -45,6 +47,7 @@ const deleteAction = (id) => {
           </div>
           <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <NuxtLink
+              v-if="user?.permissions?.student_create"
               to="students/create"
               class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
             >
@@ -167,12 +170,14 @@ const deleteAction = (id) => {
                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
                       >
                         <NuxtLink
+                          v-if="user?.permissions?.student_edit"
                           :to="`students/${student.id}/edit`"
                           class="text-indigo-600 hover:text-indigo-900"
                         >
                           Edit
                         </NuxtLink>
                         <button
+                          v-if="user?.permissions?.student_delete"
                           @click="deleteAction(student.id)"
                           class="ml-2 text-indigo-600 hover:text-indigo-900"
                         >

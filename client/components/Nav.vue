@@ -24,6 +24,13 @@ const logout = async () => {
           >
             Dashboard
           </NuxtLink>
+          <NuxtLink
+            v-if="user?.permissions?.student_list"
+            to="/students"
+            class="text-sm font-semibold leading-6 text-gray-900"
+          >
+            Students
+          </NuxtLink>
         </div>
       </div>
       <div class="flex lg:hidden">
